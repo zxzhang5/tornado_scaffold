@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="renderer" content="webkit">
+        <title>{% block title %}A Tornado Demo{% end %}</title>
+        <meta name="keywords" content="{% block keywords %}Tornado{% end %}">
+        <meta name="description" content="{% block description %}A Tornado Demo{% end %}">
+        {% block css %}
+        {% end %}
+        {% block js %}
+        {% end %}
+        <link rel="shortcut icon" href="{{ static_url('favicon.png') }}" sizes="16x16 32x32">
+        <link rel="icon" href="{{ static_url('favicon.ico') }}" type="image/x-icon">
+    </head>
+    <body>
+        {% block body %}
+        {% end %}
+    </body>
+</html>

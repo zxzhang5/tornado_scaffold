@@ -8,6 +8,12 @@ cd tornado_bus_demo
 python setup.py develop
 ```
 
+## Run
+
+```bash
+python app.py -port=88
+```
+
 ## License
 
 This project is licensed under the MIT License.

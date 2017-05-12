@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 import os
 import sys
 __DIR__ = os.path.abspath(os.path.dirname(__file__))
@@ -38,9 +40,7 @@ setup(
         "Natural Language :: Chinese (Simplified)",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.3",
-        "Programming Language :: Python :: 3.4",
-        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3",
         "Topic :: Software Development :: Libraries :: Application Frameworks",
     ]
 )
