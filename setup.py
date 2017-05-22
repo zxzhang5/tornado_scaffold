@@ -2,10 +2,11 @@
 
 import os
 import sys
-__DIR__ = os.path.abspath(os.path.dirname(__file__))
 import codecs
 from setuptools import setup
 import tornado_bus_demo
+
+__DIR__ = os.path.abspath(os.path.dirname(__file__))
 
 
 def read(filename):
@@ -14,7 +15,8 @@ def read(filename):
 
 install_requires = [
     "tornado",
-    "Tornado-JSON"
+    "Tornado-JSON",
+    "peewee"
 ]
 long_description = read("README.md")
 
