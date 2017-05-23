@@ -38,14 +38,18 @@ class PageHandler(tornado.web.RequestHandler):
             self.render(tpl, path=file_path)
         else:
             self.set_status(404)
-            self.render("errors/404.html", path=file_path)
+            if file_path[0:4] == '/api':
+                self.write('{"status": "fail", "data": "The requested URL '
+                           + file_path + ' was not found on this server."}')
+            else:
+                self.render("errors/404.html", path=file_path)
 
 
 # 加载API模块返回模块路由
-def import_api_module(module):
-    api_module_path = os.path.join(__DIR__, "api", module)
-    if os.path.isdir(api_module_path):
-        api_module = __import__("api." + module)
+def import_module(module):
+    module_path = os.path.join(__DIR__, module)
+    if os.path.isdir(module_path):
+        api_module = __import__(name=module, fromlist=["api"])
         routes = get_routes(api_module)
         return routes
     else:
@@ -67,16 +71,15 @@ def main():
     define("port", default=port, help="run on the given port", type=int)
 
     # 根据配置动态加载API模块
-    api_modules = env.items("API_MODULE")
+    api_modules = env.items("MODULE")
     routes = []
     for module, on in api_modules:
         if on == '1':
-            routes += import_api_module(module)
-            print("Routes\n======\n\n" + json.dumps(
-                [(url, repr(rh)) for url, rh in routes],
-                indent=2)
-                  )
-
+            routes += import_module(module)
+    print("Routes\n======\n\n" + json.dumps(
+        [(url, repr(rh)) for url, rh in routes],
+        indent=2)
+          )
     template_path = os.path.join(__DIR__, "templates")
     static_path = os.path.join(__DIR__, "static")
     # 服务参数设置
