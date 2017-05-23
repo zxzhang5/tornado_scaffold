@@ -1,17 +1,17 @@
-# Tornado Bus Demo
+# Tornado Scaffold
 
 ## Installation
 
 ```bash
-git clone https://github.com/zxzhang5/tornado_bus_demo.git
-cd tornado_bus_demo
+git clone https://github.com/zxzhang5/tornado_scaffold.git
+cd tornado_scaffold
 python setup.py develop
 ```
 
 ## Run
 
 ```bash
-python app.py -port=88
+python app.py
 ```
 
 ## License

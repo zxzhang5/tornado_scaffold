@@ -4,7 +4,7 @@ import os
 import sys
 import codecs
 from setuptools import setup
-import tornado_bus_demo
+import tornado_scaffold
 
 __DIR__ = os.path.abspath(os.path.dirname(__file__))
 
@@ -21,14 +21,14 @@ install_requires = [
 long_description = read("README.md")
 
 setup(
-    name="tornado_bus_demo",
-    version=tornado_bus_demo.__version__,
-    url="https://github.com/zxzhang5/tornado_bus_demo",
+    name="tornado_scaffold",
+    version=tornado_scaffold.__version__,
+    url="https://github.com/zxzhang5/tornado_scaffold",
     license="MIT License",
     author="Zhang Zhi Xiang",
-    description="A demo project based on Tornado",
+    description="A scaffold project based on Tornado",
     long_description=long_description,
-    packages=["tornado_bus_demo"],
+    packages=["tornado_scaffold"],
     install_requires=install_requires,
     data_files=[
         # Populate this with any files config files etc.

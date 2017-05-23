@@ -41,7 +41,7 @@ class PageHandler(tornado.web.RequestHandler):
             self.render("errors/404.html", path=file_path)
 
 
-# 加载API模块
+# 加载API模块返回模块路由
 def import_api_module(module):
     api_module_path = os.path.join(__DIR__, "api", module)
     if os.path.isdir(api_module_path):
@@ -66,11 +66,12 @@ def main():
     # 定义默认端口
     define("port", default=port, help="run on the given port", type=int)
 
-    # 加载API模块
+    # 根据配置动态加载API模块
     api_modules = env.items("API_MODULE")
+    routes = []
     for module, on in api_modules:
         if on == '1':
-            routes = import_api_module(module)
+            routes += import_api_module(module)
             print("Routes\n======\n\n" + json.dumps(
                 [(url, repr(rh)) for url, rh in routes],
                 indent=2)
