@@ -16,7 +16,9 @@ def read(filename):
 install_requires = [
     "tornado",
     "Tornado-JSON",
-    "peewee"
+    "peewee",
+    "bcrypt",
+    "psycopg2"  # use postgresql
 ]
 long_description = read("README.md")
 

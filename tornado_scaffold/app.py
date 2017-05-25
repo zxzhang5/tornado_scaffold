@@ -1,23 +1,21 @@
 # encoding: utf-8
 
-import ConfigParser
 import json
-import os.path
 import sys
+import os.path
 from shutil import copy2
 
+from helper import *
 import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 from tornado.options import define, options
 from tornado_json.application import Application
-from tornado_json.routes import get_routes
 
-# 绝对路径
-__DIR__ = os.path.abspath(os.path.dirname(__file__))
 # 设置系统字符编码
 reload(sys)
 sys.setdefaultencoding('utf-8')
+sys.path = ['modules'] + sys.path
 
 
 # 默认页面控制器
@@ -32,7 +30,7 @@ class PageHandler(tornado.web.RequestHandler):
         else:
             tpl = file_path.lstrip('/') + ".html"
         # 模版文件路径
-        template_path = os.path.join(__DIR__, "templates", tpl)
+        template_path = base_path("templates", tpl)
         # 模版文件存在则渲染，否则渲染404页面模版
         if os.path.isfile(template_path):
             self.render(tpl, path=file_path)
@@ -45,24 +43,12 @@ class PageHandler(tornado.web.RequestHandler):
                 self.render("errors/404.html", path=file_path)
 
 
-# 加载API模块返回模块路由
-def import_module(module):
-    module_path = os.path.join(__DIR__, module)
-    if os.path.isdir(module_path):
-        api_module = __import__(name=module, fromlist=["api"])
-        routes = get_routes(api_module)
-        return routes
-    else:
-        return []
-
-
 def main():
-    env_file = os.path.join(__DIR__, ".env")
+    env_file = base_path(".env")
     if not os.path.isfile(env_file):
-        env_example = os.path.join(__DIR__, ".env.example")
+        env_example = base_path(".env.example")
         copy2(env_example, env_file)
-    env = ConfigParser.ConfigParser()
-    env.read(env_file)
+    env = read_env()
     port = env.getint('APP', 'APP_PORT')
     address = env.get('APP', 'APP_ADDRESS')
     debug = env.getboolean('APP', 'APP_DEBUG')
@@ -75,17 +61,13 @@ def main():
     routes = []
     for module, on in api_modules:
         if on == '1':
-            routes += import_module(module)
-    print("Routes\n======\n\n" + json.dumps(
-        [(url, repr(rh)) for url, rh in routes],
-        indent=2)
-          )
-    template_path = os.path.join(__DIR__, "templates")
-    static_path = os.path.join(__DIR__, "static")
+            routes += get_module_api_routes(module)
+    print(routes)
+    template_path = base_path("templates")
+    static_path = base_path("static")
     # 服务参数设置
     app = Application(routes=routes, settings={
         'debug': debug,                              # 调试模式，产品环境设为False
-        'compiled_template_cache': not debug,        # 模版缓存，产品环境设为True
         'template_path': template_path,            # 模版文件存放路径
         'static_path': static_path,                # 静态文件存放路径
         'default_handler_class': PageHandler     # 默认页面控制器
